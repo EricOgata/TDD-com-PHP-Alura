@@ -2,8 +2,7 @@
 	/**
 	* 
 	*/
-	class Lance
-	{
+	class Lance {
 		private $usuario;
 		private $valor;
 		
