@@ -94,7 +94,58 @@
 			$mediaEsperada = 15000;
 
 			$this->assertEquals( $mediaEsperada, $leiloeiro->getValorMedio(), 0.00001 );
+		}
 
+		public function testLancesAleatorios(){
+			$leilao = new Leilao("Pamonha");
+
+			$usuario1 = new Usuario("Túlio");
+
+			$leilao->propoe(new Lance($usuario1,200));
+			$leilao->propoe(new Lance($usuario1,450));
+			$leilao->propoe(new Lance($usuario1,120));
+			$leilao->propoe(new Lance($usuario1,700));
+			$leilao->propoe(new Lance($usuario1,630));
+			$leilao->propoe(new Lance($usuario1,230));
+			$leilao->propoe(new Lance($usuario1,500));
+
+			$leiloeiro = new Avaliador();
+			$leiloeiro->avalia($leilao);
+
+			$maiorLanceEsperado = 700;
+			$menorLanceEsperado = 120;
+
+			$this->assertEquals($maiorLanceEsperado, $leiloeiro->getMaiorLance() );
+			$this->assertEquals($menorLanceEsperado, $leiloeiro->getMenorLance() );
+		}
+
+		public function testLancesDecrescentes(){
+			$leilao = new Leilao("Pamonha");
+
+			$usuario1 = new Usuario("Túlio");
+			$leilao->propoe(new Lance($usuario1, 400));
+			$leilao->propoe(new Lance($usuario1, 300));
+			$leilao->propoe(new Lance($usuario1, 200));
+			$leilao->propoe(new Lance($usuario1, 100));
+
+			$leiloeiro = new Avaliador();
+			$leiloeiro->avalia($leilao);
+
+			// Testar maior e menor lances
+			$maiorLanceEsperado = 400;
+			$menorLanceEsperado = 100;
+			
+			$this->assertEquals($maiorLanceEsperado, $leiloeiro->getMaiorLance() );
+			$this->assertEquals($menorLanceEsperado, $leiloeiro->getMenorLance() );
+
+			// Testar 3 maiores lances
+			$testMaioresLances = array(400,300,200);
+			$maiores = $leiloeiro->getMaiores();
+
+			$this->assertEquals(count($maiores), 3);
+			$this->assertEquals($maiores[0]->getValor(), $testMaioresLances[0]);
+			$this->assertEquals($maiores[1]->getValor(), $testMaioresLances[1]);
+			$this->assertEquals($maiores[2]->getValor(), $testMaioresLances[2]);
 		}
 
 	}
