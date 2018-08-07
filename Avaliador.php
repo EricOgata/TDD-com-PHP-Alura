@@ -12,11 +12,17 @@
 			foreach ($leilao->getLances() as $lance) {
 				if($lance->getValor() > $this->maiorValor){
 					$this->maiorValor = $lance->getValor();
-				}else if($lance->getValor() < $this->menorValor){
+				}
+				if($lance->getValor() < $this->menorValor){
 					$this->menorValor = $lance->getValor();
 				}
 			}
 
+		}
+
+		public function valorMedio(){
+			$valorMedio = ($this->maiorValor + $this->menorValor) / 2;
+			return $valorMedio;
 		}
 
 		public function getMaiorLance()
